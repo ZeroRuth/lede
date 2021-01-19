@@ -61,11 +61,8 @@ jobs:
       - name: Update feeds
         run: |
          echo 'src-git jerryk https://github.com/jerrykuku/openwrt-package' >> ./feeds.conf.default
-         echo sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
          rm -rf luci-theme-argon
          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
-         make menuconfig #choose LUCI->Theme->Luci-theme-argon  
-         make -j1 V=s
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
