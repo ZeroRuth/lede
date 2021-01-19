@@ -47,22 +47,6 @@ jobs:
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
 
-      - name: 同步最新的源码
-        run: |
-          cd /home/user/lede/package/lean/ && git clone https://github.com/jerrykuku/lua-maxminddb.git  #git lua-maxminddb依赖
-          git clone https://github.com/jerrykuku/luci-app-vssr.git
-          rm -rf luci-theme-argon
-          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
-          git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git
-          make package/lean/luci-app-jd-dailybonus/compile V=s  #单独编译luci-app-jd-dailybonus
-        
-      - name: 添加自定义插件
-        run: |
-          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
-          git clone https://github.com/jerrykuku/lua-maxminddb.git  #git lua-maxminddb 依赖
-          git clone https://github.com/jerrykuku/luci-app-vssr.git
-          git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git
-
           # sudo mkdir -p -m 777 /mnt/openwrt/bin /mnt/openwrt/build_dir/host /mnt/openwrt/build_dir/hostpkg /mnt/openwrt/dl /mnt/openwrt/feeds /mnt/openwrt/staging_dir
           # ln -s /mnt/openwrt/bin ./bin
           # mkdir -p ./build_dir
@@ -73,6 +57,17 @@ jobs:
           # ln -s /mnt/openwrt/staging_dir ./staging_dir
 
           df -h
+          
+      - name: Update feeds
+        run: |
+          # 清除默认主题
+          sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
+          cd lede/package/lean/
+          rm -rf luci-theme-argon  
+          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git  #A new LuCI theme for OpenWrt
+          git clone https://github.com/jerrykuku/lua-maxminddb.git  #git lua-maxminddb 依赖
+          git clone https://github.com/jerrykuku/luci-app-vssr.git  #An OpenWrt Internet surfing plug-in
+          git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git  #Luci for JD dailybonus Script for Openwrt
 
       - name: Update feeds
         run: |
