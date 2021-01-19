@@ -58,15 +58,13 @@ jobs:
 
           df -h
           
-      - name: 添加自定义软件
-        run: |
-          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git  #A new LuCI theme for OpenWrt
-          git clone https://github.com/jerrykuku/lua-maxminddb.git  #git lua-maxminddb 依赖
-          git clone https://github.com/jerrykuku/luci-app-vssr.git  #An OpenWrt Internet surfing plug-in
-          git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git  #Luci for JD dailybonus Script for Openwrt
-
       - name: Update feeds
         run: |
+         echo 'src-git jerryk https://github.com/jerrykuku/openwrt-package' >> ./feeds.conf.default
+         sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
+         git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
+         make menuconfig #choose LUCI->Theme->Luci-theme-argon  
+         make -j1 V=s
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -94,8 +92,6 @@ jobs:
           CONFIG_PACKAGE_node=y
           # CONFIG_PACKAGE_vsftpd-alt is not set
           CONFIG_PACKAGE_luci-theme-argon=y
-          CONFIG_PACKAGE_lua-maxminddb=y
-          CONFIG_PACKAGE_luci-app-vssr=y
           CONFIG_PACKAGE_luci-app-jd-dailybonus=y
           EOF
 
