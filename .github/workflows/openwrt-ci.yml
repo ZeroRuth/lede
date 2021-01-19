@@ -105,7 +105,8 @@ jobs:
           # CONFIG_PACKAGE_vsftpd-alt is not set
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_lua-maxminddb=y
-          CONFIG_PACKAGE_luci-app-vssr=y                  CONFIG_PACKAGE_luci-app-jd-dailybonus=y
+          CONFIG_PACKAGE_luci-app-vssr=y
+          CONFIG_PACKAGE_luci-app-jd-dailybonus=y
           EOF
 
           #
